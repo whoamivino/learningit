@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>添加置顶应用</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="vux.css">
+    <script src="vue.js"></script>
+    <style type="text/css">
+    </style>
+  </head>
+  <body>
+    <br/>
+    <br/>
+    <div id="demo" class="container">
+        <div v-for="(index,item) in list" style="text-align:center;">
+            <p class="vux-divider">{{item.parentName}}</p>
+            <div class="row" style="margin-left:8px;margin-right:8px;">
+              <div class="col-xs-3 col-sm-3" v-for="(childIndex,childItem) in item.children" style="border:1px solid #DDDDDD;" id="{{childItem.id}}">
+                <img height="30px" src="pics/主页.svg" style="display: inline-block;"/>
+                <img v-show="!childItem.isSelected" height="12px" src="pics/增加.svg" v-on:click="add(index,childIndex)" style="position:absolute; right:2%; top:2%;" />
+                <img v-show="childItem.isSelected" height="12px" src="pics/减少.svg" v-on:click="remove(index,childIndex)" style="position:absolute; right:2%; top:2%;"/><br/>
+                <span style="font-size:50%;">{{childItem.name}}</span>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="divider/index.js"></script>
+    <script>
+        // register components
+      Vue.component('divider', vuxDivider)
+      new Vue({
+        el: '#demo',
+        data: {
+            isVisiable:false,
+            list: [
+            {'parentId':1,'parentName':'作息管理','children':[{'id':'11','name':'请假申请','isSelected':false},{'id':'12','name':'加班管理','isSelected':false},{'id':'13','name':'休假变更','isSelected':false},{'id':'14','name':'补漏刷卡','isSelected':false}]}, 
+            {'parentId':2,'parentName':'流程管理','children':[{'id':'21','name':'我启动的','isSelected':false},{'id':'22','name':'待我审的','isSelected':false},{'id':'23','name':'我已审的','isSelected':true},{'id':'24','name':'所有流程','isSelected':false}]}, 
+            {'parentId':3,'parentName':'日程管理','children':[{'id':'31','name':'我的日历','isSelected':true},{'id':'32','name':'我的笔记','isSelected':true}]}
+            ]
+        },
+        methods: {
+          //自定义方法
+          add:function(index,childIndex){
+            this.list[index].children[childIndex].isSelected=true;
+          },
+          remove:function(index,childIndex){
+            this.list[index].children[childIndex].isSelected=false;
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
